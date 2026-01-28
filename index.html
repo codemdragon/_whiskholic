@@ -248,6 +248,97 @@
                 display: none;
             }
         }
+
+        /* Hamburger Menu */
+        .hamburger-line {
+            width: 24px;
+            height: 3px;
+            background: var(--pink);
+            margin: 3px 0;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        #hamburger-btn.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        #hamburger-btn.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        #hamburger-btn.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Mobile Sidebar */
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            visibility: hidden;
+        }
+
+        .mobile-sidebar.active {
+            visibility: visible;
+        }
+
+        .sidebar-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-sidebar.active .sidebar-overlay {
+            opacity: 1;
+        }
+
+        .sidebar-content {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 280px;
+            max-width: 85%;
+            height: 100%;
+            background: white;
+            padding: 2rem;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+        }
+
+        .mobile-sidebar.active .sidebar-content {
+            transform: translateX(0);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            color: #333;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-bottom: 1px solid #f0f0f0;
+            transition: color 0.2s ease;
+        }
+
+        .sidebar-link:hover {
+            color: var(--pink);
+        }
+
+        .sidebar-link i {
+            width: 24px;
+            color: var(--pink);
+        }
     </style>
 </head>
 
@@ -270,7 +361,8 @@
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-2">
-                    <span class="text-2xl">🥄</span>
+                    <img src="Logo.jpg" alt="Whiskholic" class="w-10 h-10 rounded-full object-cover"
+                        onerror="this.outerHTML='<span class=\'text-2xl\'>🥄</span>'">
                     <span class="font-display text-2xl font-bold text-gray-800">Whiskholic</span>
                 </div>
                 <div class="hidden md:flex space-x-8">
@@ -280,12 +372,43 @@
                     <a href="#gallery" class="text-gray-700 hover:text-pink-500 transition">Gallery</a>
                     <a href="#contact" class="text-gray-700 hover:text-pink-500 transition">Order</a>
                 </div>
-                <a href="https://www.instagram.com/_whiskholic/" target="_blank" class="instagram-btn md:hidden">
-                    <i class="fab fa-instagram"></i>
-                </a>
+                <!-- Hamburger Menu Button -->
+                <button id="hamburger-btn" class="md:hidden flex flex-col justify-center items-center w-10 h-10"
+                    onclick="toggleMobileMenu()">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Sidebar -->
+    <div id="mobile-sidebar" class="mobile-sidebar">
+        <div class="sidebar-overlay" onclick="toggleMobileMenu()"></div>
+        <div class="sidebar-content">
+            <div class="flex items-center space-x-2 mb-8 pb-4 border-b border-gray-200">
+                <img src="Logo.jpg" alt="Whiskholic" class="w-12 h-12 rounded-full object-cover"
+                    onerror="this.outerHTML='<span class=\'text-3xl\'>🥄</span>'">
+                <span class="font-display text-xl font-bold text-gray-800">Whiskholic</span>
+            </div>
+            <a href="#home" class="sidebar-link" onclick="toggleMobileMenu()"><i class="fas fa-home mr-3"></i>Home</a>
+            <a href="#about" class="sidebar-link" onclick="toggleMobileMenu()"><i
+                    class="fas fa-heart mr-3"></i>About</a>
+            <a href="#services" class="sidebar-link" onclick="toggleMobileMenu()"><i
+                    class="fas fa-birthday-cake mr-3"></i>Services</a>
+            <a href="#gallery" class="sidebar-link" onclick="toggleMobileMenu()"><i
+                    class="fas fa-images mr-3"></i>Gallery</a>
+            <a href="#contact" class="sidebar-link" onclick="toggleMobileMenu()"><i
+                    class="fas fa-shopping-bag mr-3"></i>Order Now</a>
+            <div class="mt-8 pt-4 border-t border-gray-200">
+                <a href="https://www.instagram.com/_whiskholic/" target="_blank"
+                    class="instagram-btn w-full text-center inline-block">
+                    <i class="fab fa-instagram mr-2"></i>Follow @_whiskholic
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section id="home" class="hero-bg relative min-h-screen flex items-center justify-center py-20">
@@ -306,8 +429,8 @@
                         <a href="#contact" class="btn-primary text-lg">
                             <i class="fas fa-birthday-cake mr-2"></i>Order Your Cake
                         </a>
-                        <a href="https://www.instagram.com/_whiskholic/" target="_blank" class="btn-secondary text-lg">
-                            <i class="fab fa-instagram mr-2"></i>View Instagram
+                        <a href="#gallery" class="btn-secondary text-lg">
+                            <i class="fas fa-images mr-2"></i>View Gallery
                         </a>
                     </div>
 
@@ -609,60 +732,34 @@
                 </p>
             </div>
 
-            <div class="max-w-4xl mx-auto">
-                <div class="grid md:grid-cols-2 gap-12">
-                    <div class="fade-in">
-                        <h3 class="font-display text-2xl font-bold text-gray-800 mb-6">How to Order</h3>
-                        <div class="space-y-6">
-                            <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6">
-                                <div class="flex items-center space-x-4 mb-4">
-                                    <div
-                                        class="bg-gradient-to-br from-purple-100 to-pink-100 text-pink-500 rounded-full p-4 flex-shrink-0">
-                                        <i class="fab fa-instagram text-3xl"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-semibold text-gray-800 text-xl mb-1">Order via Instagram</h4>
-                                        <p class="text-gray-600">Send us a DM with your requirements!</p>
-                                    </div>
-                                </div>
-                                <a href="https://www.instagram.com/_whiskholic/" target="_blank"
-                                    class="instagram-btn w-full text-center inline-block">
-                                    <i class="fab fa-instagram mr-2"></i>Message @_whiskholic
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="mt-8 p-6 bg-white rounded-2xl shadow-lg">
-                            <h4 class="font-semibold text-gray-800 mb-3">Order Requirements</h4>
-                            <ul class="text-sm text-gray-600 space-y-2">
-                                <li>• 2-3 days notice for custom cakes</li>
-                                <li>• 1 day notice for cupcakes & brownies</li>
-                                <li>• Advance payment for confirmation</li>
-                                <li>• Delivery charges apply based on location</li>
-                            </ul>
-                        </div>
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-white rounded-3xl shadow-xl p-8 md:p-12 text-center fade-in">
+                    <div class="inline-block p-6 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full mb-6">
+                        <i class="fab fa-instagram text-6xl text-pink-500"></i>
                     </div>
+                    <h3 class="font-display text-3xl font-bold text-gray-800 mb-4">
+                        Order via Instagram
+                    </h3>
+                    <p class="text-gray-600 mb-8">
+                        Send us a DM with your cake requirements and we'll create something magical for you!
+                    </p>
 
-                    <div class="fade-in">
-                        <div class="bg-white rounded-2xl shadow-lg p-8 text-center">
-                            <div class="mb-6">
-                                <div
-                                    class="inline-block p-6 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full mb-4">
-                                    <i class="fab fa-instagram text-6xl text-pink-500"></i>
-                                </div>
-                                <h3 class="font-display text-3xl font-bold text-gray-800 mb-3">
-                                    Order on Instagram
-                                </h3>
-                                <p class="text-gray-600 mb-6">
-                                    Send us a DM on Instagram with your cake requirements and we'll create something
-                                    magical for you!
-                                </p>
-                            </div>
+                    <a href="https://www.instagram.com/_whiskholic/" target="_blank"
+                        class="instagram-btn text-lg inline-block mb-8">
+                        <i class="fab fa-instagram mr-2"></i>Message @_whiskholic
+                    </a>
 
-                            <a href="https://www.instagram.com/_whiskholic/" target="_blank"
-                                class="instagram-btn text-lg inline-block">
-                                <i class="fab fa-instagram mr-2"></i>Message @_whiskholic
-                            </a>
+                    <div class="border-t border-gray-100 pt-8">
+                        <h4 class="font-semibold text-gray-800 mb-4">Order Requirements</h4>
+                        <div class="grid sm:grid-cols-2 gap-4 text-sm text-gray-600 text-left max-w-md mx-auto">
+                            <div class="flex items-center"><i class="fas fa-clock text-pink-500 mr-2"></i>2-3 days
+                                notice for cakes</div>
+                            <div class="flex items-center"><i class="fas fa-cupcake text-pink-500 mr-2"></i>1 day notice
+                                for cupcakes</div>
+                            <div class="flex items-center"><i class="fas fa-credit-card text-pink-500 mr-2"></i>Advance
+                                payment</div>
+                            <div class="flex items-center"><i class="fas fa-truck text-pink-500 mr-2"></i>Delivery
+                                charges apply</div>
                         </div>
                     </div>
                 </div>
@@ -674,30 +771,25 @@
     <footer class="bg-gray-900 text-white py-12">
         <div class="container mx-auto px-6">
             <div class="text-center">
-                <div class="flex justify-center items-center space-x-2 mb-4">
-                    <span class="text-3xl">🥄</span>
+                <div class="flex justify-center items-center space-x-3 mb-4">
+                    <img src="Logo.jpg" alt="Whiskholic" class="w-12 h-12 rounded-full object-cover"
+                        onerror="this.outerHTML='<span class=\'text-3xl\'>🥄</span>'">
                     <span class="font-display text-3xl font-bold">Whiskholic</span>
                 </div>
                 <p class="text-gray-400 mb-6 max-w-2xl mx-auto">
                     Creating sweet memories for birthdays and special occasions in Karachi.
                     Custom cakes, cupcakes, and brownies made with love.
                 </p>
-                <div class="flex justify-center space-x-6 mb-8">
+                <div class="flex justify-center mb-8">
                     <a href="https://www.instagram.com/_whiskholic/" target="_blank"
                         class="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-full hover:scale-110 transition">
                         <i class="fab fa-instagram text-xl"></i>
                     </a>
-                    <a href="mailto:whiskholic.karachi@gmail.com"
-                        class="bg-red-500 p-3 rounded-full hover:scale-110 transition">
-                        <i class="fas fa-envelope text-xl"></i>
-                    </a>
-                    <a href="tel:+923001234567" class="bg-green-500 p-3 rounded-full hover:scale-110 transition">
-                        <i class="fas fa-phone text-xl"></i>
-                    </a>
                 </div>
                 <div class="border-t border-gray-800 pt-6">
                     <p class="text-gray-500">
-                        © 2024 Whiskholic. All rights reserved. | Karachi, Pakistan | DM to order 🥄
+                        © 2026 Whiskholic. All rights reserved. | Made by <a href="https://codemsportfolio.netlify.app"
+                            target="_blank" class="text-pink-400 hover:text-pink-300 transition">Codem</a>
                     </p>
                 </div>
             </div>
@@ -759,6 +851,15 @@
 
         // Load content on page load
         document.addEventListener('DOMContentLoaded', loadDatabaseContent);
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('mobile-sidebar');
+            const hamburger = document.getElementById('hamburger-btn');
+            sidebar.classList.toggle('active');
+            hamburger.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+        }
 
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
